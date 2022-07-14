@@ -4,9 +4,9 @@ const isMobile = createSlice({
     name: 'isMobile',
     initialState: false,
     reducers: {
-        change: (state, action) => action.payload,
+        setMobile: (state, action) => action.payload,
     },
 });
 
-export const {change} = isMobile.actions;
+export const {setMobile} = isMobile.actions;
 export default isMobile.reducer;

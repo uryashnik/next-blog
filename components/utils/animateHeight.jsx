@@ -1,4 +1,5 @@
 import React, {useRef, useEffect} from 'react';
+import PropTypes from 'prop-types';
 
 const AnimateHeight = ({open, children}) => {
     const animated = useRef(null);
@@ -19,6 +20,11 @@ const AnimateHeight = ({open, children}) => {
             </div>
         </>
     );
+};
+
+AnimateHeight.propTypes = {
+    open: PropTypes.bool,
+    children: PropTypes.any,
 };
 
 export default AnimateHeight;

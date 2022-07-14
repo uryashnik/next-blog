@@ -1,33 +1,61 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import Lock from '../icons/lock';
 import {useSelector} from 'react-redux';
 import {COLOR_PRIMARY, COLOR_WHITE} from '../layout/constants';
 import Button from '../button/buttonFlat';
+import {useRequest} from '../../hooks/useRequest';
+import {useSnackbar} from 'react-simple-snackbar';
+import {useEffect} from 'react';
+import {useForm} from 'react-hook-form';
+const queryParams = {
+    method: 'post',
+    url: '/api/user',
+};
 
 const Form = () => {
     const {theme} = useSelector(({theme}) => ({theme}));
     const isDark = theme === 'dark';
+    const [openSnackbar, closeSnackbar] = useSnackbar();
+    const {isLoading, response, errorMsg, load} = useRequest(queryParams);
+
+    const {
+        register,
+        formState: {errors},
+        handleSubmit,
+    } = useForm();
+
+    const sendForm = useCallback((data) => load(data), []);
+
+    useEffect(() => {
+        if (response) {
+            openSnackbar('Подписка успешно оформлена', 2000);
+        }
+    }, [response]);
 
     return (
         <div>
             <div className="font-medium md:text-lg lg:text-xl pt-7 mb-5 lg:mb-7 md:pt-0">
                 Join the Newsletter
             </div>
-            <form action="/order" method="post" className="w-full md:w-72">
+            <form className="w-full md:w-72" onSubmit={handleSubmit(sendForm)}>
                 <input
-                    className="block mb-4 pb-2 outline-0 border-b border-primary border-opacity-50 bg-transparent w-full dark:border-white"
-                    type="text"
-                    name="name"
+                    className={`block mb-4 pb-2 outline-0 border-b border-primary/50 bg-transparent w-full dark:border-white ${
+                        errors.name && 'border-red-400'
+                    }`}
                     placeholder="Name"
+                    {...register('name', {required: true})}
                 />
                 <input
-                    className="block mb-4 pb-2 outline-0 border-b border-primary border-opacity-50 bg-transparent w-full dark:border-white"
-                    type="text"
-                    name="email"
+                    className={`block mb-4 pb-2 outline-0 border-b border-primary/50 bg-transparent w-full dark:border-white ${
+                        errors.email && 'border-red-400'
+                    }`}
                     placeholder="E-mail"
+                    {...register('email', {required: true})}
                 />
                 <div className="flex items-center justify-between">
-                    <Button type="submit">Join</Button>
+                    <Button disabled={isLoading} type="submit">
+                        Join {isLoading ? '...' : ''}
+                    </Button>
                     <div className="flex items-center">
                         <div className="mr-1">
                             <Lock fill={isDark ? COLOR_WHITE : COLOR_PRIMARY} />

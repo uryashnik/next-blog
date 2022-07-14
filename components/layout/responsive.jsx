@@ -1,16 +1,22 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import EventListener from 'react-event-listener';
 import _debounce from 'lodash.debounce';
-import {change} from './slices/isMobile';
+import {setMobile} from './slices/isMobile';
+import {setMd} from './slices/isMd';
+import {setLg} from './slices/isLg';
+import {setXl} from './slices/isXl';
 import {useDispatch} from 'react-redux';
 
 const MIN_MOBILE = 0,
     MAX_MOBILE = 767,
-    // MIN_TABLET = 768,
-    // MAX_TABLET = 1270,
+    MIN_MD = 768,
+    MAX_MD = 1023,
+    MIN_LG = 1024,
+    MAX_LG = 1279,
     VIEWPORT_MOBILE = 'mobile',
-    // VIEWPORT_TABLET = 'tablet',
-    VIEWPORT_DESKTOP = 'desktop';
+    VIEWPORT_MD = 'md',
+    VIEWPORT_LG = 'lg',
+    VIEWPORT_XL = 'xl';
 
 const Responsive = ({children}) => {
     const dispatch = useDispatch();
@@ -20,10 +26,12 @@ const Responsive = ({children}) => {
 
             if (width >= MIN_MOBILE && width <= MAX_MOBILE) {
                 return VIEWPORT_MOBILE;
-                // } else if (width >= MIN_TABLET && width <= MAX_TABLET) {
-                //     return VIEWPORT_TABLET;
+            } else if (width >= MIN_MD && width <= MAX_MD) {
+                return VIEWPORT_MD;
+            } else if (width >= MIN_LG && width <= MAX_LG) {
+                return VIEWPORT_LG;
             } else {
-                return VIEWPORT_DESKTOP;
+                return VIEWPORT_XL;
             }
         }
     }, []);
@@ -41,10 +49,10 @@ const Responsive = ({children}) => {
 
     useEffect(() => {
         if (viewport) {
-            console.log('viewport === VIEWPORT_MOBILE: ', viewport === VIEWPORT_MOBILE);
-            dispatch(change(viewport === VIEWPORT_MOBILE));
-            // isTablet(viewport === VIEWPORT_TABLET);
-            // isLaptop(viewport === VIEWPORT_DESKTOP);
+            dispatch(setMobile(viewport === VIEWPORT_MOBILE));
+            dispatch(setMd(viewport === VIEWPORT_MD));
+            dispatch(setLg(viewport === VIEWPORT_LG));
+            dispatch(setXl(viewport === VIEWPORT_XL));
         }
     }, [viewport]);
 
