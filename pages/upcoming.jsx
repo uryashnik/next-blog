@@ -7,12 +7,12 @@ import Announce from '../components/announce/full';
 const Upcoming = ({posts}) => {
     return (
         <div>
-            <h2 className="text-[30px] md:text-[36px] lg:text-[50px] leading-normal mb-8 md:mb-14">
-                I'll be posting announcements of future articles here, subscribe to interesting
+            <h2 className='text-[30px] md:text-[36px] lg:text-[50px] leading-normal mb-8 md:mb-14'>
+                I&apos;ll be posting announcements of future articles here, subscribe to interesting
                 stuff!
             </h2>
-            <div className="border-b border-primary/5 mb-8 md:mb-14 dark:border-white/5"></div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-16">
+            <div className='border-b border-primary/5 mb-8 md:mb-14 dark:border-white/5'></div>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-16'>
                 {posts.map((post) => (
                     <Announce key={post.id} {...post} />
                 ))}

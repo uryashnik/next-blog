@@ -10,6 +10,8 @@ const Button = React.forwardRef(({children, className, ...rest}, ref) => (
     </button>
 ));
 
+Button.displayName = 'Button';
+
 Button.propTypes = {
     children: PropTypes.any,
     className: PropTypes.string,

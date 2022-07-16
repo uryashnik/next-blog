@@ -1,6 +1,6 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
-@import 'reactjs-popup/dist/index.css';
+
 @layer components {
     .opened span:nth-child(1) {
         top: 7px;
