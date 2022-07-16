@@ -7,6 +7,8 @@ import {set} from './slices/theme';
 import {requestCategories, gotRequest, errorCategories} from './slices/categories';
 import {getDocs, collection} from 'firebase/firestore';
 import db from '../../firebase';
+import {useRouter} from 'next/router';
+import {startLoading, stopLoading} from './slices/isLoading';
 
 const Layout = ({children}) => {
     const {theme, error, standBy, categories} = useSelector(({theme, categories}) => ({
@@ -16,6 +18,7 @@ const Layout = ({children}) => {
         categories: categories.data,
     }));
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const toggleTheme = useCallback(() => {
         if (theme === 'dark') {
@@ -24,6 +27,18 @@ const Layout = ({children}) => {
             dispatch(set('dark'));
         }
     }, [theme]);
+
+    useEffect(() => {
+        router.events.on('routeChangeStart', () => dispatch(startLoading()));
+        router.events.on('routeChangeComplete', () => dispatch(stopLoading()));
+        router.events.on('routeChangeError', () => dispatch(stopLoading()));
+
+        return () => {
+            router.events.off('routeChangeStart', () => dispatch(startLoading()));
+            router.events.off('routeChangeComplete', () => dispatch(stopLoading()));
+            router.events.off('routeChangeError', () => dispatch(stopLoading()));
+        };
+    }, [router]);
 
     useEffect(() => {
         const load = async () => {
