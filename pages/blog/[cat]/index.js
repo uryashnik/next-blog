@@ -7,15 +7,17 @@ const Catalog = ({posts, category}) => (
     <div className="mx-auto lg:w-5/6">
         <div className="mb-14 lg:mb-28 text-3xl md:text-5xl">{category}</div>
         <div>
-            {posts.map((post) => (
-                <div className="mb-10" key={post.id}>
-                    <Topic
-                        {...post}
-                        tags={Object.keys(post.tags)}
-                        link={`/blog/${category}/${post.id}`}
-                    />
-                </div>
-            ))}
+            {posts.length
+                ? posts.map((post) => (
+                      <div className="mb-10" key={post.id}>
+                          <Topic
+                              {...post}
+                              tags={Object.keys(post.tags)}
+                              link={`/blog/${category}/${post.id}`}
+                          />
+                      </div>
+                  ))
+                : 'Yet no articles ...'}
         </div>
     </div>
 );
