@@ -7,7 +7,7 @@ import Button from '../button';
 import Moon from '../icons/moon';
 import {COLOR_PRIMARY, COLOR_WHITE} from '../layout/constants';
 
-const MobMenu = ({open, onChangeTheme}) => {
+const MobMenu = ({open, onChangeTheme, onSubscribe}) => {
     const {theme} = useSelector(({theme}) => ({theme}));
     const isDark = theme === 'dark';
 
@@ -22,7 +22,7 @@ const MobMenu = ({open, onChangeTheme}) => {
                             placeholder="Search"
                         />
                     </label>
-                    <Button className={'flex lg:hidden px-9 py-2 mr-2 md:mr-0'}>Subscribe</Button>
+                    <Button onClick={onSubscribe} className={'flex lg:hidden px-9 py-2 mr-2 md:mr-0'}>Subscribe</Button>
                     <Button
                         onClick={onChangeTheme}
                         className={'flex items-center p-3 pt-[12px] sm:hidden'}
@@ -38,6 +38,7 @@ const MobMenu = ({open, onChangeTheme}) => {
 MobMenu.propTypes = {
     open: PropTypes.bool,
     onChangeTheme: PropTypes.func,
+    onSubscribe: PropTypes.func,
 };
 
 export default MobMenu;

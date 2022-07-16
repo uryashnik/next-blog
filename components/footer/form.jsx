@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, forwardRef} from 'react';
 import Lock from '../icons/lock';
 import {useSelector} from 'react-redux';
 import {COLOR_PRIMARY, COLOR_WHITE} from '../layout/constants';
@@ -12,7 +12,7 @@ const queryParams = {
     url: '/api/user',
 };
 
-const Form = () => {
+const SubscribeForm = forwardRef(({}, ref) => {
     const {theme} = useSelector(({theme}) => ({theme}));
     const isDark = theme === 'dark';
     const [openSnackbar, closeSnackbar] = useSnackbar();
@@ -40,14 +40,15 @@ const Form = () => {
             <form className="w-full md:w-72" onSubmit={handleSubmit(sendForm)}>
                 <input
                     className={`block mb-4 pb-2 outline-0 border-b border-primary/50 bg-transparent w-full dark:border-white ${
-                        errors.name && 'border-red-400'
+                        errors.name && 'border-red-400 dark:border-red-400'
                     }`}
                     placeholder="Name"
                     {...register('name', {required: true})}
+                    ref={ref}
                 />
                 <input
                     className={`block mb-4 pb-2 outline-0 border-b border-primary/50 bg-transparent w-full dark:border-white ${
-                        errors.email && 'border-red-400'
+                        errors.email && 'border-red-400 dark:border-red-400'
                     }`}
                     placeholder="E-mail"
                     {...register('email', {required: true})}
@@ -66,6 +67,8 @@ const Form = () => {
             </form>
         </div>
     );
-};
+})
 
-export default Form;
+SubscribeForm.displayName = 'SubscribeForm';
+
+export default SubscribeForm;

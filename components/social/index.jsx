@@ -16,7 +16,7 @@ const icons = [
 ];
 
 const index = ({className, fill}) => {
-    const styles = `bg-primary/20 hover:bg-primary/40 dark:bg-btnBgDark/40 dark:hover:bg-btnBgDark100`;
+    const styles = `bg-primary/20 hover:bg-primary/40 dark:bg-btnBgDark/40 dark:hover:bg-btnBgDark/100`;
 
     return (
         <div className="flex">

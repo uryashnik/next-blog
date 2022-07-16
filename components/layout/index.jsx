@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import Header from '../header';
 import Footer from '../footer';
 import Responsive from './responsive';
@@ -19,7 +19,7 @@ const Layout = ({children}) => {
     }));
     const dispatch = useDispatch();
     const router = useRouter();
-
+    const subscribeForm = useRef();
     const toggleTheme = useCallback(() => {
         if (theme === 'dark') {
             dispatch(set('white'));
@@ -27,6 +27,10 @@ const Layout = ({children}) => {
             dispatch(set('dark'));
         }
     }, [theme]);
+    const scrollToForm = useCallback(() => {
+        subscribeForm.current?.scrollIntoView({behavior: 'smooth'});
+
+    }, [subscribeForm]);
 
     useEffect(() => {
         router.events.on('routeChangeStart', () => dispatch(startLoading()));
@@ -56,7 +60,8 @@ const Layout = ({children}) => {
 
     return (
         <div className={`${theme === 'dark' ? 'dark' : ''} `}>
-            <div className="flex flex-col min-h-[100vh] border-coverBrand dark:bg-contentDark text-primary dark:text-white">
+            <div
+                className='flex flex-col min-h-[100vh] border-coverBrand dark:bg-contentDark text-primary dark:text-white'>
                 {standBy ? (
                     'Loading ... '
                 ) : error ? (
@@ -64,11 +69,11 @@ const Layout = ({children}) => {
                 ) : (
                     <>
                         <Responsive />
-                        <Header onChangeTheme={toggleTheme} />
-                        <div className="mt-[89px] px-7 py-12 w-full md:py-24 sm:mt-[98px] grow ">
-                            <div className="mx-auto max-w-7xl">{children}</div>
+                        <Header onChangeTheme={toggleTheme} onSubscribe={scrollToForm}/>
+                        <div className='mt-[89px] px-7 py-12 w-full md:py-24 sm:mt-[98px] grow '>
+                            <div className='mx-auto max-w-7xl'>{children}</div>
                         </div>
-                        <Footer categories={categories} />
+                        <Footer categories={categories} ref={subscribeForm}/>
                     </>
                 )}
             </div>
